@@ -12,6 +12,22 @@ class User {
   User({required this.id, required this.name, required this.email, required this.role});
 }
 
+class Customer {
+  final String id;
+  final String name;
+  final String contactInfo;
+  final String accountNumber;
+  final String accountType;
+
+  Customer({
+    required this.id,
+    required this.name,
+    required this.contactInfo,
+    required this.accountNumber,
+    required this.accountType,
+  });
+}
+
 class Transaction {
   final String id;
   final String title;
@@ -73,10 +89,12 @@ class AppState extends ChangeNotifier {
   User? get currentUser => _currentUser;
 
   // Mock Data
+  List<Customer> _customers = [];
   List<Transaction> _transactions = [];
   List<Loan> _loans = [];
   List<SavingsAccount> _savings = [];
 
+  List<Customer> get customers => _customers;
   List<Transaction> get transactions => _transactions;
   List<Loan> get loans => _loans;
   List<SavingsAccount> get savings => _savings;
@@ -102,6 +120,31 @@ class AppState extends ChangeNotifier {
 
   void logout() {
     _currentUser = null;
+    notifyListeners();
+  }
+
+  void addCustomer(String name, String contact, String accNum, String accType) {
+    final newCustomer = Customer(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      name: name,
+      contactInfo: contact,
+      accountNumber: accNum,
+      accountType: accType,
+    );
+    _customers.add(newCustomer);
+    notifyListeners();
+  }
+
+  void updateCustomer(Customer updatedCustomer) {
+    final index = _customers.indexWhere((c) => c.id == updatedCustomer.id);
+    if (index != -1) {
+      _customers[index] = updatedCustomer;
+      notifyListeners();
+    }
+  }
+
+  void deleteCustomer(String id) {
+    _customers.removeWhere((c) => c.id == id);
     notifyListeners();
   }
 
@@ -132,6 +175,12 @@ class AppState extends ChangeNotifier {
   }
 
   void _generateMockData() {
+    _customers = [
+      Customer(id: 'c1', name: 'Alice Johnson', contactInfo: '555-0101', accountNumber: 'SA-1001', accountType: 'Savings'),
+      Customer(id: 'c2', name: 'Bob Williams', contactInfo: '555-0102', accountNumber: 'LN-2002', accountType: 'Loan'),
+      Customer(id: 'c3', name: 'Charlie Brown', contactInfo: '555-0103', accountNumber: 'SA-1003', accountType: 'Savings'),
+    ];
+
     _savings = [
       SavingsAccount(id: 's1', name: 'Emergency Fund', balance: 5000, interestRate: 2.5, goalAmount: 10000),
       SavingsAccount(id: 's2', name: 'Vacation', balance: 1200, interestRate: 2.0, goalAmount: 3000),

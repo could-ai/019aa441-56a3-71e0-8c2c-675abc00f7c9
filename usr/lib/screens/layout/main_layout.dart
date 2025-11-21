@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:couldai_user_app/providers/app_state.dart';
 import 'package:couldai_user_app/screens/dashboard/dashboard_screen.dart';
-import 'package:couldai_user_app/screens/auth/login_screen.dart';
+import 'package:couldai_user_app/screens/customers/customer_management_screen.dart';
 
 // Placeholder screens for now
 class SavingsScreen extends StatelessWidget {
@@ -98,6 +98,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> _screens = [
     const DashboardScreen(),
+    const CustomerManagementScreen(),
     const SavingsScreen(),
     const LoansScreen(),
     const Center(child: Text('Transactions History')),
@@ -145,6 +146,11 @@ class _MainLayoutState extends State<MainLayout> {
                 icon: Icon(Icons.dashboard_outlined),
                 selectedIcon: Icon(Icons.dashboard),
                 label: Text('Dashboard'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.people_outline),
+                selectedIcon: Icon(Icons.people),
+                label: Text('Customers'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.savings_outlined),
